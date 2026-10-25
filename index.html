@@ -1,0 +1,395 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ASTRALX Studio</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="Books, researched scripts and AI video for creators and indie authors. One producer, every claim checked.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: a production timeline. Hero is a clip strip with a moving playhead; services read like spec sheets; proof reads like a credits roll. */
+:root {
+  --bg: #0D1028;
+  --surface: #161A3A;
+  --surface-2: #1E2350;
+  --fg: #ECEDF7;
+  --muted: #A3A8CC;
+  --line: #2C3266;
+  --accent: #F2A541;
+  --accent-ink: #1A1206;
+  --ok: #6FD3A6;
+  --soon: #8FA3FF;
+  --display: "Syne", "Trebuchet MS", system-ui, sans-serif;
+  --body: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  --r: 10px;
+  color-scheme: dark;
+}
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) {
+    --bg: #F2F3F9; --surface: #FFFFFF; --surface-2: #E6E8F4; --fg: #141834; --muted: #555B82;
+    --line: #CFD3E8; --accent: #B8680A; --accent-ink: #FFFFFF; --ok: #1E8A5B; --soon: #3A4FC4;
+    color-scheme: light;
+  }
+}
+:root[data-theme="light"] {
+  --bg: #F2F3F9; --surface: #FFFFFF; --surface-2: #E6E8F4; --fg: #141834; --muted: #555B82;
+  --line: #CFD3E8; --accent: #B8680A; --accent-ink: #FFFFFF; --ok: #1E8A5B; --soon: #3A4FC4;
+  color-scheme: light;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+body {
+  background: var(--bg); color: var(--fg); font-family: var(--body); font-size: 16px; line-height: 1.6;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+.wrap { max-width: 1080px; margin: 0 auto; }
+a { color: var(--accent); }
+a:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
+h1, h2, h3 { font-family: var(--display); line-height: 1.08; text-wrap: balance; margin: 0; }
+p { margin: 0; }
+.eyebrow { font-family: var(--mono); font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
+
+/* top bar */
+.top { display: flex; justify-content: space-between; align-items: center; gap: 16px; padding-block: 22px; flex-wrap: wrap; }
+.mark { font-family: var(--display); font-weight: 800; font-size: 20px; letter-spacing: .06em; }
+.mark span { color: var(--accent); }
+.top nav { display: flex; gap: 18px; flex-wrap: wrap; font-size: 14px; }
+.top nav a { color: var(--muted); text-decoration: none; }
+.top nav a:hover { color: var(--fg); }
+
+/* hero */
+.hero { padding-block: 40px 56px; display: grid; gap: 28px; }
+.hero h1 { font-size: clamp(38px, 7.4vw, 82px); font-weight: 800; letter-spacing: -.01em; max-width: 14ch; }
+.hero h1 em { font-style: normal; color: var(--accent); }
+.hero .lede { font-size: clamp(17px, 2.1vw, 20px); color: var(--muted); max-width: 60ch; }
+.cta { display: flex; gap: 12px; flex-wrap: wrap; }
+.btn { display: inline-flex; align-items: center; gap: 8px; padding: 12px 18px; border-radius: 999px; font-weight: 600; font-size: 15px; text-decoration: none; border: 1px solid var(--line); color: var(--fg); background: transparent; cursor: pointer; font-family: var(--body); }
+.btn.primary { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+.btn:hover { transform: translateY(-1px); }
+
+/* clip strip */
+.strip { margin-top: 8px; border: 1px solid var(--line); border-radius: var(--r); background: var(--surface); padding: 14px; overflow: hidden; }
+.strip-head { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; font-family: var(--mono); font-size: 12px; color: var(--muted); margin-bottom: 12px; }
+.strip-head b { color: var(--fg); font-weight: 500; }
+.track { position: relative; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; }
+.clip { background: var(--surface-2); border-radius: 6px; padding: 12px 10px 10px; min-width: 0; min-height: 92px; display: flex; flex-direction: column; justify-content: space-between; gap: 8px; position: relative; overflow: hidden; }
+.clip::before { content: ""; position: absolute; inset: 0 0 auto 0; height: 3px; background: repeating-linear-gradient(90deg, var(--line) 0 6px, transparent 6px 10px); }
+.clip .tc { font-family: var(--mono); font-size: 11px; color: var(--muted); }
+.clip .lbl { font-family: var(--display); font-weight: 700; font-size: clamp(14px, 2vw, 18px); }
+.clip .sub { font-size: 12px; color: var(--muted); line-height: 1.35; }
+.playhead { position: absolute; top: -6px; bottom: -6px; width: 2px; background: var(--accent); left: 0; box-shadow: 0 0 12px var(--accent); animation: play 10s linear infinite; pointer-events: none; }
+.playhead::before { content: ""; position: absolute; top: -2px; left: -5px; border: 6px solid transparent; border-top-color: var(--accent); }
+@keyframes play { from { left: 0; } to { left: calc(100% - 2px); } }
+@media (prefers-reduced-motion: reduce) { .playhead { animation: none; left: 37%; } }
+@media (max-width: 560px) { .track { grid-template-columns: repeat(2, minmax(0, 1fr)); } .playhead { display: none; } }
+.fmts { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
+.fmt { font-family: var(--mono); font-size: 12px; letter-spacing: .04em; padding: 7px 12px; min-height: 32px; border-radius: 999px; border: 1px solid var(--line); background: transparent; color: var(--muted); cursor: pointer; }
+.fmt:hover { color: var(--fg); border-color: var(--muted); }
+.fmt[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+
+/* sections */
+section { padding-block: 56px; border-top: 1px solid var(--line); }
+.sec-head { display: grid; gap: 10px; margin-bottom: 28px; max-width: 68ch; }
+.sec-head h2 { font-size: clamp(28px, 4.4vw, 44px); font-weight: 700; }
+.sec-head p { color: var(--muted); }
+
+/* services */
+.services { display: grid; gap: 18px; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); }
+.svc { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); padding: 22px; display: flex; flex-direction: column; gap: 16px; min-width: 0; }
+.svc .code { font-family: var(--mono); font-size: 12px; color: var(--accent); letter-spacing: .08em; }
+.svc h3 { font-size: 24px; font-weight: 700; }
+.svc .what { color: var(--muted); font-size: 15px; }
+.svc dl { margin: 0; display: grid; gap: 12px; }
+.svc dt { font-family: var(--mono); font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
+.svc dd { margin: 2px 0 0; font-size: 15px; }
+.svc ul { margin: 4px 0 0; padding-left: 18px; display: grid; gap: 4px; font-size: 15px; }
+.edge { border-left: 3px solid var(--accent); padding: 10px 0 10px 14px; background: color-mix(in srgb, var(--accent) 7%, transparent); border-radius: 0 6px 6px 0; }
+.edge b { display: block; font-family: var(--mono); font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--accent); margin-bottom: 4px; font-weight: 500; }
+.price { margin-top: auto; display: flex; justify-content: space-between; align-items: baseline; gap: 10px; padding-top: 14px; border-top: 1px dashed var(--line); font-variant-numeric: tabular-nums; }
+.price .from { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+.price .amt { font-family: var(--display); font-weight: 800; font-size: 28px; }
+
+/* edge comparison table */
+.tbl-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: var(--r); background: var(--surface); }
+table { border-collapse: collapse; width: 100%; min-width: 620px; font-size: 15px; }
+th, td { text-align: left; vertical-align: top; padding: 14px 16px; border-bottom: 1px solid var(--line); }
+th { font-family: var(--mono); font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); font-weight: 500; }
+tr:last-child td { border-bottom: 0; }
+td:first-child { font-weight: 600; white-space: nowrap; }
+td.them { color: var(--muted); }
+
+/* proof roll */
+.roll { display: grid; gap: 0; border-top: 1px solid var(--line); }
+.row { display: grid; grid-template-columns: 170px minmax(0, 1fr) auto; gap: 18px; padding-block: 18px; border-bottom: 1px solid var(--line); align-items: start; }
+.row .kind { font-family: var(--mono); font-size: 12px; color: var(--muted); letter-spacing: .06em; padding-top: 3px; }
+.row h3 { font-family: var(--body); font-size: 18px; font-weight: 600; line-height: 1.3; }
+.row p { color: var(--muted); font-size: 15px; margin-top: 4px; }
+.chip { font-family: var(--mono); font-size: 11px; letter-spacing: .06em; padding: 4px 9px; border-radius: 999px; border: 1px solid currentColor; white-space: nowrap; }
+.chip.live { color: var(--ok); }
+.chip.soon { color: var(--soon); }
+@media (max-width: 640px) { .row { grid-template-columns: minmax(0, 1fr); gap: 6px; } .row .chip { justify-self: start; } }
+.feature { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); padding: 24px; display: grid; gap: 24px; }
+.feature .kind { font-family: var(--mono); font-size: 12px; color: var(--muted); letter-spacing: .06em; }
+.feature-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; flex-wrap: wrap; }
+.feature-top > div { min-width: 0; }
+.feature h3 { font-size: clamp(24px, 4vw, 36px); font-weight: 800; margin-top: 6px; overflow-wrap: anywhere; }
+.feature h3 a { color: var(--fg); text-decoration: none; border-bottom: 2px solid var(--accent); }
+.feature h3 a:hover { color: var(--accent); }
+.facts { margin: 0; display: grid; gap: 18px; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+.facts > div { min-width: 0; }
+.facts dt { font-family: var(--mono); font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--accent); }
+.facts dd { margin: 4px 0 0; font-size: 15px; }
+.map { border-top: 1px dashed var(--line); padding-top: 18px; display: grid; gap: 12px; }
+.map ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+.map li { background: var(--surface-2); border-radius: 6px; padding: 12px 14px; display: grid; gap: 4px; min-width: 0; }
+.map li b { font-family: var(--mono); font-size: 12px; font-weight: 500; letter-spacing: .06em; }
+.map li span { font-size: 14px; color: var(--muted); }
+
+/* process */
+.steps { list-style: none; margin: 0; padding: 0; display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); counter-reset: s; }
+.steps li { counter-increment: s; padding: 18px; border-radius: var(--r); background: var(--surface); border: 1px solid var(--line); min-width: 0; }
+.steps li::before { content: "Step " counter(s); display: block; font-family: var(--mono); font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--accent); margin-bottom: 8px; }
+.steps h3 { font-family: var(--body); font-size: 17px; font-weight: 600; }
+.steps p { color: var(--muted); font-size: 14px; margin-top: 6px; }
+.split { margin-top: 22px; display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
+.split div { padding: 18px; border-radius: var(--r); border: 1px dashed var(--line); min-width: 0; }
+.ai-note { border: 1px dashed var(--accent); border-radius: 10px; padding: 10px 14px; font-size: 14px; color: var(--fg); }
+.ai-note b { font-family: var(--mono); font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--accent); font-weight: 500; margin-right: 6px; }
+.split h3 { font-family: var(--mono); font-size: 12px; letter-spacing: .12em; text-transform: uppercase; font-weight: 500; color: var(--muted); margin-bottom: 8px; }
+.split ul { margin: 0; padding-left: 18px; display: grid; gap: 4px; font-size: 15px; }
+
+/* platforms */
+.plats { display: grid; gap: 10px; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); }
+.plat { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 14px 16px; border-radius: var(--r); background: var(--surface); border: 1px solid var(--line); min-width: 0; }
+.plat b { display: block; font-weight: 600; }
+.plat span.d { display: block; font-size: 13px; color: var(--muted); }
+
+/* contact */
+.contact { display: grid; gap: 18px; }
+.contact h2 { font-size: clamp(30px, 5vw, 52px); font-weight: 800; max-width: 18ch; }
+.contact .lede { color: var(--muted); max-width: 58ch; }
+footer { padding-block: 28px 40px; color: var(--muted); font-size: 13px; display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; border-top: 1px solid var(--line); }
+footer .mono { font-family: var(--mono); }
+</style>
+</head>
+<body>
+
+
+<div class="wrap">
+  <header class="top">
+    <div class="mark">ASTRALX<span>/</span>STUDIO</div>
+    <nav aria-label="Sections">
+      <a href="#services">Services</a>
+      <a href="#edge">The edge</a>
+      <a href="samples.html">Samples</a>
+      <a href="#proof">Portfolio</a>
+      <a href="#process">Process</a>
+      <a href="#find">Hire me</a>
+    </nav>
+  </header>
+
+  <div class="hero">
+    <p class="eyebrow">AI video · Scripts · KDP audits · Based in the Philippines</p>
+    <h1>Your format, <em>produced and fact-checked.</em></h1>
+    <p class="lede">I produce faceless YouTube videos, researched scripts and Amazon KDP royalty audits for creators and indie authors. Bring your channel's format, or I design one with you. AI does the heavy lifting; I direct it, check every claim, and sign off on every frame.</p>
+    <div class="cta">
+      <a class="btn primary" href="#services">See the three services</a>
+      <a class="btn" href="samples.html">See samples</a>
+      <a class="btn" href="#find">Where to hire me</a>
+    </div>
+
+    <div class="strip" aria-label="Example video formats, each built from four 8-second clips">
+      <div class="strip-head"><span><b>PICK A FORMAT</b> · or bring your own</span><span>4 clips · 32 seconds · 1080p</span></div>
+      <div class="fmts" aria-label="Video formats">
+        <button type="button" class="fmt" id="fmt-explainer" data-f="explainer" aria-pressed="true">Explainer</button>
+        <button type="button" class="fmt" id="fmt-countdown" data-f="countdown" aria-pressed="false">Countdown</button>
+        <button type="button" class="fmt" id="fmt-myth" data-f="myth" aria-pressed="false">Myth vs fact</button>
+        <button type="button" class="fmt" id="fmt-story" data-f="story" aria-pressed="false">Story</button>
+        <button type="button" class="fmt" id="fmt-product" data-f="product" aria-pressed="false">Product demo</button>
+        <button type="button" class="fmt" id="fmt-yours" data-f="yours" aria-pressed="false">Your format</button>
+      </div>
+      <div class="track" aria-live="polite">
+        <div class="clip"><span class="tc">00:00 → 00:08</span><div><div class="lbl" id="l0">Question</div><div class="sub" id="s0">What viewers want to know</div></div></div>
+        <div class="clip"><span class="tc">00:08 → 00:16</span><div><div class="lbl" id="l1">Why it matters</div><div class="sub" id="s1">The stakes, in one line</div></div></div>
+        <div class="clip"><span class="tc">00:16 → 00:24</span><div><div class="lbl" id="l2">How it works</div><div class="sub" id="s2">The answer, step by step</div></div></div>
+        <div class="clip"><span class="tc">00:24 → 00:32</span><div><div class="lbl" id="l3">Takeaway</div><div class="sub" id="s3">What to remember</div></div></div>
+        <div class="playhead" aria-hidden="true"></div>
+      </div>
+    </div>
+  </div>
+
+  <section id="services">
+    <div class="sec-head">
+      <p class="eyebrow">What I deliver</p>
+      <h2>Three services, one production line</h2>
+      <p>Fixed prices, clear deliverables, two revision rounds. <a href="samples.html">See a full sample of each.</a></p>
+      <p class="ai-note"><b>AI-assisted</b>All three services use AI tools to draft, research and generate video and voice. I direct the work, check every fact and approve every delivery, and AI hosts and voices are always labeled.</p>
+    </div>
+    <div class="services">
+      <article class="svc">
+        <span class="code">SVC-01 · VIDEO</span>
+        <h3>AI video for faceless channels</h3>
+        <p class="what">Shorts, reels and long-form YouTube videos built to your channel's format, or a format we design with you.</p>
+        <dl>
+          <div><dt>You get</dt><dd><ul><li>Your format followed, or a custom one designed</li><li>Script and shot list</li><li>Edited video with captions and music</li><li>Thumbnail concept and title options</li><li>AI disclosure note for upload</li></ul></dd></div>
+        </dl>
+        <div class="edge"><b>The edge</b>Continuity in any format. Your host keeps the same face, voice and setting from clip to clip, and every video gets its own script, so the format stays consistent while the channel never looks mass-produced.</div>
+        <div class="price"><span class="from">60-sec short, from</span><span class="amt">$60</span></div>
+      </article>
+
+      <article class="svc">
+        <span class="code">SVC-02 · SCRIPT</span>
+        <h3>Researched, fact-checked scripts</h3>
+        <p class="what">YouTube scripts in any structure: explainer, countdown, story, documentary or your own template. Written for retention.</p>
+        <dl>
+          <div><dt>You get</dt><dd><ul><li>Script built for 8–12 minutes</li><li>Hook, chapter beats and B-roll cues</li><li>Source sheet: every claim, linked</li><li>Written to your template and tone</li></ul></dd></div>
+        </dl>
+        <div class="edge"><b>The edge</b>Every claim is checked against a source you can click. Most cheap scripts are unverified AI text, and one wrong number can sink a channel's credibility.</div>
+        <div class="price"><span class="from">1,500-word script, from</span><span class="amt">$75</span></div>
+      </article>
+
+      <article class="svc">
+        <span class="code">SVC-03 · BOOK</span>
+        <h3>KDP royalty audit for indie authors</h3>
+        <p class="what">Amazon changed how indie books earn in October 2026. I check what it means for each of your titles and hand you the fixes.</p>
+        <dl>
+          <div><dt>You get</dt><dd><ul><li>Kindle+ enroll or stay-wide call per book</li><li>Virtual Voice audiobook readiness</li><li>Kindle Translate shortlist</li><li>Audible Dec 31 deadline plan</li><li>New blurb, 7 keywords, 3 categories</li></ul></dd></div>
+        </dl>
+        <div class="edge"><b>The edge</b>Every recommendation comes with its source, checked against Amazon's own help pages and announcements. No login needed and your manuscript is never touched.</div>
+        <div class="price"><span class="from">Single-title audit, from</span><span class="amt">$49</span></div>
+      </article>
+    </div>
+  </section>
+
+  <section id="edge">
+    <div class="sec-head">
+      <p class="eyebrow">The judgment you are paying for</p>
+      <h2>What the tools can't decide for you</h2>
+      <p>Anyone can press generate. These are the calls I make on every job.</p>
+    </div>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Decision</th><th>Typical AI gig</th><th>How I handle it</th></tr></thead>
+        <tbody>
+          <tr><td>Is it true?</td><td class="them">Whatever the model wrote</td><td>Each claim traced to a source, logged in a sheet you keep</td></tr>
+          <tr><td>Does it fit my channel?</td><td class="them">One house style for every client</td><td>Your format followed beat for beat, or a custom one designed for you</td></tr>
+          <tr><td>Will it stay monetized?</td><td class="them">Same template, new topic</td><td>A distinct script, angle and edit per video, so YouTube's inauthentic-content review sees a real creator</td></tr>
+          <tr><td>Does the host stay the same?</td><td class="them">Face and voice drift between clips</td><td>One locked character reference, reused in every clip</td></tr>
+          <tr><td>Is it disclosed?</td><td class="them">Not mentioned</td><td>Realistic synthetic media flagged on YouTube; AI-generated text and images declared on KDP</td></tr>
+          <tr><td>Is the advice current?</td><td class="them">Tips written before 2026</td><td>Checked against Kindle+, Virtual Voice, Kindle Translate and Audible's new royalty model</td></tr>
+          <tr><td>Will readers find it?</td><td class="them">Generic keywords</td><td>Keywords and categories chosen from real Amazon search behavior for your niche</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section id="proof">
+    <div class="sec-head">
+      <p class="eyebrow">Production sample</p>
+      <h2>Royalty Receipts</h2>
+      <p>My own faceless YouTube channel, made on the same production line I sell. It shows production quality. It is not a template your videos will copy, and not a growth result to expect.</p>
+    </div>
+    <div class="feature">
+      <div class="feature-top">
+        <div>
+          <p class="kind">YouTube channel · Publishing and money claims, checked</p>
+          <h3><a href="https://www.youtube.com/@RoyaltyReceiptsHQ" target="_blank" rel="noopener">@RoyaltyReceiptsHQ</a></h3>
+        </div>
+        <span class="chip soon">Launching</span>
+      </div>
+      <dl class="facts">
+        <div><dt>Host consistency</dt><dd>Tally, a disclosed AI host, keeps the same face, expressions and setting in every clip.</dd></div>
+        <div><dt>Verified facts</dt><dd>Every figure on screen is traced to its source before it airs.</dd></div>
+        <div><dt>Pacing</dt><dd>Long-form episodes of 8–9 minutes or more, plus Shorts cut from each one.</dd></div>
+        <div><dt>Disclosure</dt><dd>AI use is disclosed on every upload.</dd></div>
+      </dl>
+      <div class="map">
+        <p class="kind">What your project gets instead</p>
+        <ul>
+          <li><b>Your own format</b><span>Yours, or one we design. Never this channel's.</span></li>
+          <li><b>Your own host and look</b><span>Built for your brand and kept consistent</span></li>
+          <li><b>Clear specs</b><span>Length, format, date and sources, agreed up front</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="process">
+    <div class="sec-head">
+      <p class="eyebrow">How a job runs</p>
+      <h2>From brief to delivery</h2>
+    </div>
+    <ol class="steps">
+      <li><h3>Brief</h3><p>You send the topic, channel or manuscript, plus two examples you like.</p></li>
+      <li><h3>Draft</h3><p>Script, shot list or listing copy, drafted fast with AI assistance.</p></li>
+      <li><h3>Check</h3><p>Claims verified, continuity reviewed, disclosure rules applied.</p></li>
+      <li><h3>Deliver</h3><p>Final files plus the source sheet or upload notes.</p></li>
+      <li><h3>Revise</h3><p>Two rounds included. Small fixes are free after that.</p></li>
+    </ol>
+    <div class="split">
+      <div><h3>AI handles</h3><ul><li>First drafts and outlines</li><li>Research leads and summaries</li><li>Clip and image generation</li><li>Formatting and variations</li></ul></div>
+      <div><h3>I handle</h3><ul><li>Choosing the angle and story</li><li>Checking every fact and number</li><li>Directing the look and the host</li><li>Final approval and client contact</li></ul></div>
+    </div>
+    <div class="split">
+      <div><h3>I promise</h3><ul><li>The agreed format, length and delivery date</li><li>Every claim linked to a source</li><li>Two revision rounds</li><li>Your format and host are never resold to another client</li></ul></div>
+      <div><h3>No one can promise</h3><ul><li>Views, subscribers or sales</li><li>YouTube monetization approval</li><li>Amazon rankings</li></ul></div>
+    </div>
+  </section>
+
+  <section id="find">
+    <div class="contact">
+      <p class="eyebrow">Hire me</p>
+      <h2>Pick the platform you already use</h2>
+      <p class="lede">Same services and prices everywhere. Message me on any of these and I reply within a few hours, covering US, UK and Australian working hours.</p>
+      <div class="plats">
+        <div class="plat"><div><b>Fiverr</b><span class="d">Fixed-price gigs, all three services</span></div><span class="chip soon">Opening</span></div>
+        <div class="plat"><div><b>Upwork</b><span class="d">Projects and ongoing retainers</span></div><span class="chip soon">Opening</span></div>
+        <div class="plat"><div><b>Contra</b><span class="d">Direct projects, portfolio first</span></div><span class="chip soon">Opening</span></div>
+        <div class="plat"><div><b>YT Jobs</b><span class="d">YouTube scripts and video</span></div><span class="chip soon">Opening</span></div>
+        <div class="plat"><div><b>OnlineJobs.ph</b><span class="d">Part-time monthly roles</span></div><span class="chip soon">Opening</span></div>
+        <div class="plat"><div><b>Raket.ph</b><span class="d">Clients in the Philippines</span></div><span class="chip soon">Opening</span></div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <span>ASTRALX Studio · Philippines (UTC+8)</span>
+    <span class="mono">AI-assisted production. Human-checked delivery.</span>
+  </footer>
+</div>
+
+<script>
+(function () {
+  var formats = {
+    explainer: [["Question", "What viewers want to know"], ["Why it matters", "The stakes, in one line"], ["How it works", "The answer, step by step"], ["Takeaway", "What to remember"]],
+    countdown: [["Promise", "Five picks, best one last"], ["#5 to #3", "Quick hits"], ["#2", "The strong contender"], ["#1", "The payoff"]],
+    myth: [["Myth", "What people believe"], ["Why it spread", "Where it came from"], ["Evidence", "The source, on screen"], ["Verdict", "True, false or misleading"]],
+    story: [["Setup", "Who, where, what's normal"], ["Turn", "What changes"], ["Stakes", "What could be lost"], ["Payoff", "How it ends"]],
+    product: [["Problem", "The pain your buyer knows"], ["Product", "Your fix, in use"], ["Proof", "What it does, shown"], ["Offer", "The next step"]],
+    yours: [["Beat 1", "Send us your structure"], ["Beat 2", "We match your pacing"], ["Beat 3", "Your host and look"], ["Beat 4", "Same shape every episode"]]
+  };
+  var buttons = document.querySelectorAll(".fmt");
+  function show(key) {
+    var beats = formats[key];
+    if (!beats) return;
+    for (var i = 0; i < 4; i++) {
+      document.getElementById("l" + i).textContent = beats[i][0];
+      document.getElementById("s" + i).textContent = beats[i][1];
+    }
+    for (var j = 0; j < buttons.length; j++) {
+      buttons[j].setAttribute("aria-pressed", buttons[j].getAttribute("data-f") === key ? "true" : "false");
+    }
+  }
+  for (var k = 0; k < buttons.length; k++) {
+    buttons[k].addEventListener("click", function () { show(this.getAttribute("data-f")); });
+  }
+})();
+</script>
+
+</body>
+</html>
